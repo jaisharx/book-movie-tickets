@@ -1,2 +1,9 @@
-# book-movie-tickets
-simple mockup for booking movies tickets
+# Movie ticket booking mockup
+
+<img src="preview.png">
+
+## Usage
+
+**Step 1:** ``` npm install ```
+
+**Step 2:** ``` npm start ```
