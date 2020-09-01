@@ -1,0 +1,19 @@
+{
+  "name": "book-movie-tickets",
+  "version": "1.0.0",
+  "description": "simple mockup for booking movies tickets",
+  "scripts": {
+    "start": "live-server src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaisharx/book-movie-tickets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaisharx/book-movie-tickets/issues"
+  },
+  "homepage": "https://github.com/jaisharx/book-movie-tickets#readme"
+}
