@@ -27,31 +27,6 @@ const saveToLocalStorage = (key, value) => {
     localStorage.setItem(key, value);
 };
 
-const updateSelectedSeats = () => {
-    const selectedSeats = document.querySelectorAll('.row .seat.selected');
-    const selectedSeatsCount = selectedSeats.length;
-    const price = selectedSeatsCount * ticketPrice;
-    let updateString = '';
-
-    const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
-
-    saveToLocalStorage('selectedSeatsData', JSON.stringify(seatsIndex));
-
-    if (selectedSeatsCount === 0) {
-        updateString = "You haven't picked any seats.";
-    } else if (selectedSeatsCount === 1) {
-        updateString = `
-        You have selected <span>${selectedSeatsCount}</span> seat for the price of <span>$${price}</span>.
-        `;
-    } else {
-        updateString = `
-        You have selected <span>${selectedSeatsCount}</span> seats for the price of <span>$${price}</span>.
-        `;
-    }
-
-    text.innerHTML = updateString;
-};
-
 const randomlyOccupySeats = () => {
     const occupiedSeats = [];
 
@@ -88,30 +63,66 @@ const checkIfOccupiedSeatsDataExistsInLS = () => {
 
 const checkIfSelectedSeatsDataExistsInLS = () => {
     const selectedSeatsArr = JSON.parse(localStorage.getItem('selectedSeatsData'));
-    console.log(selectedSeatsArr);
 
-    if(selectedSeatsArr){
-        selectedSeatsArr.forEach(index => {
+    if (selectedSeatsArr) {
+        selectedSeatsArr.forEach((index) => {
             seats[index].classList.add('selected');
         });
-        updateSelectedSeats(); // for updating the text
     }
-}
+};
 
+const checkIfMovieIndexDataExistsInLS = () => {
+    const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+    const selectedMoviePrice = localStorage.getItem('selectedMoviePrice');
 
-(function populateUIWithLSData () {
+    if (selectedMovieIndex) {
+        movieSelect.selectedIndex = selectedMovieIndex;
+    }
+
+    if(selectedMoviePrice) {
+        ticketPrice = +selectedMoviePrice;
+    }
+};
+
+(function populateUIWithLSData() {
     checkIfOccupiedSeatsDataExistsInLS();
     checkIfSelectedSeatsDataExistsInLS();
-    
+    checkIfMovieIndexDataExistsInLS();
 })();
 
+const updateSelectedSeats = () => {
+    const selectedSeats = document.querySelectorAll('.row .seat.selected');
+    const selectedSeatsCount = selectedSeats.length;
+    const price = selectedSeatsCount * ticketPrice;
+    let updateString = '';
+
+    const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+
+    saveToLocalStorage('selectedSeatsData', JSON.stringify(seatsIndex));
+
+    if (selectedSeatsCount === 0) {
+        updateString = "You haven't picked any seats.";
+    } else if (selectedSeatsCount === 1) {
+        updateString = `
+        You have selected <span>${selectedSeatsCount}</span> seat for the price of <span>$${price}</span>.
+        `;
+    } else {
+        updateString = `
+        You have selected <span>${selectedSeatsCount}</span> seats for the price of <span>$${price}</span>.
+        `;
+    }
+
+    text.innerHTML = updateString;
+};
 
 // movie pickup event
 movieSelect.addEventListener('change', (e) => {
-    const index = e.target.selectedIndex
+    console.log('log');
+    const index = e.target.selectedIndex;
     ticketPrice = +e.target.value;
 
-    saveToLocalStorage('movieData', JSON.stringify([index, ticketPrice]));
+    saveToLocalStorage('selectedMovieIndex', index);
+    saveToLocalStorage('selectedMoviePrice', ticketPrice);
     updateSelectedSeats(); // for refreshing the amount
 });
 
@@ -124,3 +135,6 @@ container.addEventListener('click', (e) => {
         updateSelectedSeats();
     }
 });
+
+// inital load
+updateSelectedSeats();
